@@ -1,0 +1,26 @@
+[INFO ] 2023-05-11 21:30:02 [PID:6935]Open sqlite3 successfully
+
+[INFO ] 2023-05-11 21:30:02 [PID:6935]Create table temperature successfully
+
+[INFO ] 2023-05-12 10:52:52 [PID:23245]Open sqlite3 successfully
+
+[INFO ] 2023-05-12 10:52:52 [PID:23245]Create table temperature successfully
+
+[ERROR] 2023-05-12 10:53:22 [PID:23245]error Insert data: no such table: temperature
+
+[INFO ] 2023-05-12 10:54:53 [PID:23934]Open sqlite3 successfully
+
+[INFO ] 2023-05-12 10:54:53 [PID:23934]Create table temperature successfully
+
+[INFO ] 2023-05-12 11:06:11 [PID:27775]Open sqlite3 successfully
+
+[INFO ] 2023-05-12 11:06:11 [PID:27775]Create table temperature successfully
+
+[INFO ] 2023-05-12 11:08:09 [PID:28449]Open sqlite3 successfully
+
+[INFO ] 2023-05-12 11:08:09 [PID:28449]Create table temperature successfully
+
+[INFO ] 2023-05-12 11:13:11 [PID:30413]Open sqlite3 successfully
+
+[INFO ] 2023-05-12 11:13:11 [PID:30413]Create table temperature successfully
+
