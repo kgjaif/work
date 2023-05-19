@@ -31,7 +31,7 @@ int sql_open_database(sqlite3 *db);
 
 int sql_create_table(sqlite3 *db);
 
-int sql_insert_data(sqlite3 *db,char *buf,int port,char* buf_t,float temper,size_t rt_length);
+int sql_insert_data(sqlite3 *db,char *buf,char *devsn,char* buf_t,float temper,size_t rt_length);
 
 int sql_select_data(sqlite3 *db);
 
@@ -90,14 +90,17 @@ int main(int argc, char **argv)
         char                            *program=NULL;
         char                            *sql;
         char                            *slc;
+        char                        *devsn=NULL;
         struct addrinfo         hints,*res,*p;
         struct option           opts[]={
                 {"ipaddr",required_argument,NULL,'i'},
                 {"port",required_argument,NULL,'p'},
-                {"doamin",required_argument,NULL,'i'},
+                {"doamin",required_argument,NULL,'d'},
+                {"devsn",required_argument,NULL,'D'},
                 {"Help",no_argument,NULL,'h'},
                 {NULL,0,NULL,0}
         };
+
 
         sqlite3 *db;
         program=basename(argv[0]);
@@ -121,7 +124,7 @@ int main(int argc, char **argv)
        //desvn="RPI00001";
 
 
-        while((ch=getopt_long(argc,argv,"i:p:d:h",opts,NULL))!=-1)
+        while((ch=getopt_long(argc,argv,"i:p:d:D:h",opts,NULL))!=-1)
         {
                 switch(ch)
                 {
@@ -135,6 +138,8 @@ int main(int argc, char **argv)
                         case 'd':
                                 domain=optarg;
                                 break;
+                        case 'D':
+                                devsn=optarg;
                         case 'h':
                                 print_usage(argv[0]);
                         default:
@@ -142,7 +147,7 @@ int main(int argc, char **argv)
                 }
         }
 
-        if(!port|!(!servip^!domain))
+        if(!port|!(!servip^!domain)|!devsn)
         {
                 print_usage(argv[0]);
                 return 0;
@@ -244,7 +249,7 @@ int main(int argc, char **argv)
 
         memset(buf,0,sizeof(buf));
 
-        snprintf(buf,sizeof(buf),"%d $ %s $ %f",port,buf_t,temper);
+        snprintf(buf,sizeof(buf),"%s $ %s $ %f",devsn,buf_t,temper);
 
         write(sockfd,buf,strlen(buf));
 
@@ -253,9 +258,9 @@ int main(int argc, char **argv)
         while(!g_stop)
         {
                 sleep(10);
-                sql_insert_data(db,buf,port,buf_t,temper,sizeof(buf));
+                sql_insert_data(db,buf,devsn,buf_t,temper,sizeof(buf));
                 memset(buf,0,sizeof(buf));
-                snprintf(buf,sizeof(buf),"%d $ %s $ %f",port,buf_t,temper);
+                snprintf(buf,sizeof(buf),"%s $ %s $ %f",devsn,buf_t,temper);
                 rv=write(sockfd,buf,strlen(buf));
                 if(rv<0)
                 {
@@ -288,28 +293,6 @@ int main(int argc, char **argv)
                         // sql_insert_data(db,buf,port,buf_t,temper,sizeof(buf));
 
                         log_write(LOG_LEVEL_INFO,"socket[%d] get disconnected\n",sockfd);
-                        memset(&servaddr,0,sizeof(servaddr));
-
-                        servaddr.sin_family=AF_INET;
-
-                        servaddr.sin_port=htons(port);
-
-                        inet_aton(servip,&servaddr.sin_addr);
-                        int retry_count = 0;
-
-                        while (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(struct sockaddr_in)) < 0)
-                        {
-                                if (retry_count >= MAX_RETRY_TIMES)
-                                {
-                                        log_write(LOG_LEVEL_ERROR,"connect error:%s\n",strerror(errno));
-                                        return (EXIT_FAILURE);
-                                }
-
-                                printf("Retry after %ds...\n", RETRY_INTERVAL);
-                                sleep(RETRY_INTERVAL);
-
-                                ++retry_count;
-                        }
 
                 }
 
@@ -358,6 +341,7 @@ static inline void print_usage(char *program)
         printf("-i(--ipaddr):sepcify server IP address\n");
         printf("-p(--port):sepcify server port\n");
         printf("-d(--domain):sepcify server domain\n");
+        printf("-D(--devsn):sepcify this devsn\n");
         printf("-h(--help):print the help information\n");
         return ;
 }
@@ -485,7 +469,7 @@ int sql_create_table(sqlite3 *db)
         char   *errmsg;
         char   *sql;
 
-        sql = "create table if not exists temperature(id INTEGER PRIMARY KEY,port VARCHAR(10),time VARCHAR(12),temper VARCHAR(20));";
+        sql = "create table if not exists temperature(id INTEGER PRIMARY KEY,devsn VARCHAR(10),time VARCHAR(12),temper VARCHAR(20));";
 
         if(SQLITE_OK!=sqlite3_exec(db,sql,0,0,&errmsg))
         {
@@ -498,11 +482,11 @@ int sql_create_table(sqlite3 *db)
 }
 
 
-int sql_insert_data(sqlite3 *db,char *buf,int port,char* buf_t,float temper,size_t buf_length)
+int sql_insert_data(sqlite3 *db,char *buf,char *devsn,char *buf_t,float temper,size_t buf_length)
 
 {
         char *tr;
-        tr=sqlite3_mprintf("INSERT INTO temperature VALUES(NULL,'%d','%s','%f');",port,buf_t,temper);
+        tr=sqlite3_mprintf("INSERT INTO temperature VALUES(NULL,'%s','%s','%f');",devsn,buf_t,temper);
         snprintf(buf,buf_length,"%s\n",tr);
         if(!tr)
         {   

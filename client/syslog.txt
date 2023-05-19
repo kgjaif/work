@@ -112,3 +112,13 @@
 
 [ERROR]2023-05-14 21:32:27 [PID:10368]connect to server[192.168.0.20:9999] failure:Connection refused
 
+[INFO]2023-05-17 19:30:57 [PID:29771]Open sqlite3 successfully
+
+[INFO]2023-05-17 19:30:57 [PID:29771]Create table temperature successfully
+
+[INFO]2023-05-17 19:30:57 [PID:29771]create socket[5] successfully
+
+[INFO]2023-05-17 19:31:08 [PID:29771]read 78 bytes data from server:9999 $ 2023-05-17  19:30:58 $ 26.5620009999 $ 2023-05-17  19:30:58 $ 26.562000
+
+[INFO]2023-05-17 19:31:17 [PID:29771]read 39 bytes data from server:9999 $ 2023-05-17  19:30:58 $ 26.562000
+

@@ -18,11 +18,11 @@
 #include <signal.h>
 #include <libgen.h>
 #include <stdarg.h>
-//#include "syslog.h"
-
-int g_stop=0;
-
-char *errmsg=NULL;
+#include "syslog.h"
+#include "database.h"
+#include "ds18b20.h"
+#include "packet.h"
+int sample_stop=0;
 
 static inline void print_usage(char *program);
 
@@ -32,7 +32,7 @@ int sql_open_database(sqlite3 **db);
 
 int sql_create_table(sqlite3 *db);
 
-int sql_insert_data(sqlite3 *db,char *buf,int port,char* buf_t,float temper,size_t rt_length);
+int sql_insert_data(sqlite3 *db,char *buf,char *devsn,char* buf_t,float temper,size_t rt_length);
 
 int sql_select_data(sqlite3 *db);
 
@@ -40,28 +40,24 @@ int sql_delete_data(sqlite3 *db);
 
 int socket_check(int *sockfd,char *servip,int *port);
 
-float get_temper(float *temper);
+//int ds18b20_get_temperature(float *temper);
 
 int  get_date_time(char *buf_t);
 
-void log_init(const char *config_file);
+//void log_init(const char *config_file);
 
-void log_write(int level,const char *fmt,...);
+//void log_write(int level,const char *fmt,...);
 
- 
 #define LOG_FILE "syslog.txt" 
-#define MAX_LOG_FILE_SIZE (1024 * 1024) 
+#define MAX_LOG_FILE_SIZE (512 * 512) 
 #define MAX_LOG_FILE_NUM 10 
 #define LOG_LEVEL_DEBUG 0
 #define LOG_LEVEL_INFO  1
 #define LOG_LEVEL_ERROR 2
 #define LOG_LEVEL_ALERT 3
 
-#define MAX_RETRY_TIMES 5
-#define RETRY_INTERVAL 3 
-
-static FILE *log_file = NULL;
-static int log_level = LOG_LEVEL_INFO;
+//static FILE *log_file = NULL;
+//static int log_level = LOG_LEVEL_INFO;
 
 int callback(void *Notused,int argc,char **argv, char **azColName)
 {
@@ -94,11 +90,14 @@ int main(int argc, char **argv)
 	char                    buf_t[64];
 	char                   *program=NULL;
 	char                   *slc;
+    char                   *devsn=NULL;
+    packet_t               pack;
 	struct addrinfo         hints,*res,*p;
 	struct option           opts[]={
 		{"ipaddr",required_argument,NULL,'i'},
 		{"port",required_argument,NULL,'p'},
-		{"doamin",required_argument,NULL,'i'},
+		{"doamin",required_argument,NULL,'d'},
+        {"devsn",required_argument,NULL,'D'},
 		{"Help",no_argument,NULL,'h'},
 		{NULL,0,NULL,0}
 	};
@@ -126,7 +125,7 @@ int main(int argc, char **argv)
 	//desvn="RPI00001";
 
 
-	while((ch=getopt_long(argc,argv,"i:p:d:h",opts,NULL))!=-1)
+	while((ch=getopt_long(argc,argv,"i:p:d:D:h",opts,NULL))!=-1)
 	{
 		switch(ch)
 		{
@@ -140,6 +139,8 @@ int main(int argc, char **argv)
 			case 'd':
 				domain=optarg;
 				break;
+            case 'D':
+                devsn=optarg;
 			case 'h':
 				print_usage(argv[0]);
 			default:
@@ -147,7 +148,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if(!port|!(!servip^!domain))
+	if(!port|!(!servip^!domain)|!devsn)
 	{
 		print_usage(argv[0]);
 		return 0;
@@ -205,26 +206,28 @@ int main(int argc, char **argv)
 		return -2;
 		}
 
-	get_temper(&temper);
+	ds18b20_get_temperature(&temper);
 
-	get_date_time(buf_t);
+	get_data_time(buf_t,sizeof(buf_t));
 
 	signal(SIGINT,set_stop);
 
 	memset(buf,0,sizeof(buf));
 
-	snprintf(buf,sizeof(buf),"%d $ %s $ %f",port,buf_t,temper);
+	snprintf(buf,sizeof(buf),"%s $ %s $ %f",devsn,buf_t,temper);
 
 	write(sockfd,buf,strlen(buf));
 
 	time_t last_time=time(NULL);
 
-	while(!g_stop)
+	while(!sample_stop)
 	{
 		sleep(10);
-		sql_insert_data(db,buf,port,buf_t,temper,sizeof(buf));
+        sample_temperature(&pack);
+        printf("gggggggggggggggggggg\n");
+		sql_insert_data(db,buf,devsn,buf_t,temper,sizeof(buf));
 		memset(buf,0,sizeof(buf));
-		snprintf(buf,sizeof(buf),"%d $ %s $ %f",port,buf_t,temper);
+		snprintf(buf,sizeof(buf),"%s $ %s $ %f",devsn,buf_t,temper);
 		rv=write(sockfd,buf,strlen(buf));
 		if(rv<0)
 		{
@@ -265,7 +268,7 @@ int main(int argc, char **argv)
 
 
 		sql_select_data(db);
-
+/*
 		char **azResult;
 		int ncolumn,nrow;
 		int index=ncolumn;
@@ -286,7 +289,7 @@ int main(int argc, char **argv)
 			}
 		}
 		sqlite3_free_table(azResult);
-
+*/
 	}
 	sqlite3_close(db);
 	close(sockfd);
@@ -300,6 +303,7 @@ static inline void print_usage(char *program)
 	printf("-i(--ipaddr):sepcify server IP address\n");
 	printf("-p(--port):sepcify server port\n");
 	printf("-d(--domain):sepcify server domain\n");
+    printf("-D(--devsn):sepcify this devsn\n");
 	printf("-h(--help):print the help information\n");
 	return ;
 }
@@ -311,11 +315,11 @@ void set_stop(int signum)
 	{
 		printf("exit\n");
 	}
-	g_stop=1;
+	sample_stop=1;
 }
 
-
-float get_temper(float *temper)
+/*
+int ds18b20_get_temperature(float *temper)
 {
 	DIR                             *dirp=NULL;
 	struct  dirent  *direntp=NULL;
@@ -388,7 +392,10 @@ float get_temper(float *temper)
 
 	return 0;
 }
+*/
 
+
+/*
 int get_date_time(char *buf_t)
 {
 	struct tm *tm;
@@ -405,7 +412,12 @@ int get_date_time(char *buf_t)
 			tm->tm_sec);
 
 }
+*/
 
+
+
+
+/*
 
 int sql_open_database(sqlite3 **db)
 {
@@ -489,8 +501,9 @@ int sql_delete_data(sqlite3 *db)
 		return -1;
 	}
 }
+*/
 
-
+/*
 void log_write(int level, const char *fmt, ...)
 {
 	time_t t;
@@ -575,7 +588,7 @@ void log_init(const char *config_file)
 
 	log_level = LOG_LEVEL_DEBUG;
 }
-
+*/
 
 /* 
 int socket_check(int *sockfd,char *servip,int *port)

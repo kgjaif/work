@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <stdarg.h>
 #include <time.h>
@@ -61,18 +62,25 @@ void log_write(int level, const char *fmt, ...)
 
 	printf("%s\n", buf);
 
-	if (log_file == NULL) {
+	if (log_file == NULL)
+    {
 		log_file = fopen(LOG_FILE, "a+");
 	}
-	if (log_file != NULL) {
+	if (log_file != NULL)
+    {
 		fseek(log_file, 0, SEEK_END);
-		if (ftell(log_file) > MAX_LOG_FILE_SIZE) {
+		if (ftell(log_file) > MAX_LOG_FILE_SIZE)
+        {
 			fclose(log_file);
-			for (int i = MAX_LOG_FILE_NUM - 1; i >= 1; i--) {
+			for (int i = MAX_LOG_FILE_NUM - 1; i >= 1; i--)
+            {
 				char old_file_name[256], new_file_name[256];
-				if (i == MAX_LOG_FILE_NUM - 1) {
+				if (i == MAX_LOG_FILE_NUM - 1)
+                {
 					snprintf(old_file_name, sizeof(old_file_name), "%s", LOG_FILE);
-				} else {
+				}
+                else
+                {
 					snprintf(old_file_name, sizeof(old_file_name), "%s.%d", LOG_FILE, i);
 				}
 				snprintf(new_file_name, sizeof(new_file_name), "%s.%d", LOG_FILE, i + 1);
@@ -81,7 +89,8 @@ void log_write(int level, const char *fmt, ...)
 			rename(LOG_FILE, LOG_FILE ".1");
 			log_file = fopen(LOG_FILE, "a+");
 		}
-		if (log_file != NULL) {
+		if (log_file != NULL)
+        {
 			fprintf(log_file, "%s\n", buf);
 			fflush(log_file);
 		}
@@ -91,7 +100,6 @@ void log_write(int level, const char *fmt, ...)
 
 void log_init(const char *config_file)
 {
-
 	log_level = LOG_LEVEL_DEBUG;
 }
 

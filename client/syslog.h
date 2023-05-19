@@ -17,6 +17,7 @@
 /*Description:This function used to record syslog*/
 extern void log_write(int level, const char *fmt, ...);
 
+/*Description:This function used to init syslog*/
 extern void log_init(const char *config_file);
 
 #endif /*----#ifndef _SYSLOG_H_ ------*/
