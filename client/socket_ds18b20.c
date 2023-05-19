@@ -28,13 +28,13 @@ static inline void print_usage(char *program);
 
 void set_stop(int signum);
 
-int sql_open_database(sqlite3 **db);
+//int sql_open_database(sqlite3 **db);
 
-int sql_create_table(sqlite3 *db);
+//int sql_create_table(sqlite3 *db);
 
-int sql_insert_data(sqlite3 *db,char *buf,char *devsn,char* buf_t,float temper,size_t rt_length);
+//int sql_insert_data(sqlite3 *db,char *buf,char *devsn,char* buf_t,float temper,size_t rt_length);
 
-int sql_select_data(sqlite3 *db);
+//int sql_select_data(sqlite3 *db);
 
 int sql_delete_data(sqlite3 *db);
 
