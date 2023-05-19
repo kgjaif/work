@@ -36,13 +36,13 @@ void set_stop(int signum);
 
 //int sql_select_data(sqlite3 *db);
 
-int sql_delete_data(sqlite3 *db);
+//int sql_delete_data(sqlite3 *db);
 
-int socket_check(int *sockfd,char *servip,int *port);
+//int socket_check(int *sockfd,char *servip,int *port);
 
 //int ds18b20_get_temperature(float *temper);
 
-int  get_date_time(char *buf_t);
+//int  get_date_time(char *buf_t);
 
 //void log_init(const char *config_file);
 
