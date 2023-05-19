@@ -17,18 +17,21 @@
 #include <time.h>
 #include <signal.h>
 #include <libgen.h>
-#include <stdarg.h>
+//#include <stdarg.h>
 #include "syslog.h"
 #include "database.h"
 #include "ds18b20.h"
 #include "packet.h"
+#include "socket.h"
+
+
 int sample_stop=0;
 
 static inline void print_usage(char *program);
 
 void set_stop(int signum);
 
-int sql_open_database(sqlite3 **db);
+//int sql_open_database(sqlite3 **db);
 
 int sql_create_table(sqlite3 *db);
 
@@ -38,7 +41,7 @@ int sql_select_data(sqlite3 *db);
 
 int sql_delete_data(sqlite3 *db);
 
-int socket_check(int *sockfd,char *servip,int *port);
+//int socket_check(int *sockfd,char *servip,int *port);
 
 //int ds18b20_get_temperature(float *temper);
 
@@ -78,21 +81,22 @@ int main(int argc, char **argv)
 {
 	int                      ch;
 	int                     rv=-1;
-	int                     sockfd=-1;
-	float                   temper;
+	//int                     sockfd=-1;
+	//float                   temper;
 	struct sockaddr_in      servaddr;
 	char                    *servip=NULL;
-	int                     port;
+	//int                     port;
 	char                    buf[512];
 	char                    buf_tmp[512];
 	char                   *domain=NULL;
-	char                    ipstr[INET_ADDRSTRLEN];
+	//char                    ipstr[INET_ADDRSTRLEN];
 	char                    buf_t[64];
 	char                   *program=NULL;
-	char                   *slc;
+	//char                   *slc;
     char                   *devsn=NULL;
     packet_t               pack;
-	struct addrinfo         hints,*res,*p;
+    socket_t               sock;
+	//struct addrinfo         hints,*res,*p;
 	struct option           opts[]={
 		{"ipaddr",required_argument,NULL,'i'},
 		{"port",required_argument,NULL,'p'},
@@ -108,30 +112,19 @@ int main(int argc, char **argv)
 	log_init("syslog.txt");
 
 	//opensqlite
-	/*
-	   int rc=sqlite3_open("temperature.db",&db);
-	   if(rc!=SQLITE_OK)
-	   {
-	   log_write(LOG_LEVEL_ALERT,"cannot open database:%s\n",sqlite3_errmsg(db));
-	   sqlite3_close(db);
-	   return -1;
-	   }
-
-	   log_write(LOG_LEVEL_INFO,"Open sqlite3 successfully\n");
-	   */
 	sql_open_database(&db);
 
 	sql_create_table(db);
 	//desvn="RPI00001";
 
 
-	while((ch=getopt_long(argc,argv,"i:p:d:D:h",opts,NULL))!=-1)
+	while((ch=getopt_long(argc,argv,"i:p:d:h",opts,NULL))!=-1)
 	{
 		switch(ch)
 		{
 
 			case 'i':
-				servip=optarg;
+			    servip=optarg;
 				break;
 			case 'p':
 				port=atoi(optarg);
@@ -139,8 +132,6 @@ int main(int argc, char **argv)
 			case 'd':
 				domain=optarg;
 				break;
-            case 'D':
-                devsn=optarg;
 			case 'h':
 				print_usage(argv[0]);
 			default:
@@ -153,7 +144,7 @@ int main(int argc, char **argv)
 		print_usage(argv[0]);
 		return 0;
 	}
-
+/*
 	memset(&hints,0,sizeof(hints));
 	hints.ai_flags-=AI_PASSIVE;
 	hints.ai_socktype=SOCK_STREAM;
@@ -205,6 +196,8 @@ int main(int argc, char **argv)
 		//socket_check(&sockfd,servip,&port);
 		return -2;
 		}
+*/
+
 
 	ds18b20_get_temperature(&temper);
 
@@ -226,9 +219,9 @@ int main(int argc, char **argv)
         sample_temperature(&pack);
         printf("gggggggggggggggggggg\n");
 		sql_insert_data(db,buf,devsn,buf_t,temper,sizeof(buf));
-		memset(buf,0,sizeof(buf));
-		snprintf(buf,sizeof(buf),"%s $ %s $ %f",devsn,buf_t,temper);
-		rv=write(sockfd,buf,strlen(buf));
+	//	memset(buf,0,sizeof(buf));
+	//	snprintf(buf,sizeof(buf),"%s $ %s $ %f",devsn,buf_t,temper);
+	//	rv=write(sockfd,buf,strlen(buf));
 		if(rv<0)
 		{
 			log_write(LOG_LEVEL_ERROR,"write to server by sockfd[%d] failure:%s\n",sockfd,strerror(errno));
@@ -240,11 +233,12 @@ int main(int argc, char **argv)
 		if(cur_time - last_time>=10)
 		{
 
-			write(sockfd,buf,strlen(buf));
+			 //write(sockfd,buf,strlen(buf));
+             socket_write(&sock,buf,strlen(buf));
 		}
 		printf("curtime:%d\n",cur_time-last_time);
 		last_time=cur_time;
-
+/*
 		memset(buf,0,sizeof(buf));
 
 		rv=read(sockfd,buf,sizeof(buf));
@@ -266,7 +260,7 @@ int main(int argc, char **argv)
 			continue;
 		}
 
-
+*/
 		sql_select_data(db);
 /*
 		char **azResult;

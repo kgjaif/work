@@ -88,3 +88,19 @@
 
 [INFO] 2023-05-19 11:14:06 [PID:23731]read 126 bytes data from server: 2023-05-19  11:13:41  31.812000
 
+[INFO] 2023-05-19 19:23:24 [PID:23804]Open sqlite3 successfully
+
+[INFO] 2023-05-19 19:23:24 [PID:23804]Create table temperature successfully
+
+[ERROR] 2023-05-19 19:23:24 [PID:23804]Unknown return val: 68
+
+[ERROR] 2023-05-19 19:23:36 [PID:23804]write to server by sockfd[-1] failure:Bad file descriptor
+
+[INFO] 2023-05-19 20:09:00 [PID:28985]Open sqlite3 successfully
+
+[INFO] 2023-05-19 20:09:00 [PID:28985]Create table temperature successfully
+
+[ERROR] 2023-05-19 20:09:00 [PID:28985]Unknown return val: 68
+
+[ERROR] 2023-05-19 20:09:12 [PID:28985]write to server by sockfd[-1] failure:No such file or directory
+
