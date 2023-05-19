@@ -33,19 +33,19 @@ void set_stop(int signum);
 
 //int sql_open_database(sqlite3 **db);
 
-int sql_create_table(sqlite3 *db);
+//int sql_create_table(sqlite3 *db);
 
-int sql_insert_data(sqlite3 *db,char *buf,char *devsn,char* buf_t,float temper,size_t rt_length);
+//int sql_insert_data(sqlite3 *db,char *buf,char *devsn,char* buf_t,float temper,size_t rt_length);
 
-int sql_select_data(sqlite3 *db);
+//int sql_select_data(sqlite3 *db);
 
-int sql_delete_data(sqlite3 *db);
+//int sql_delete_data(sqlite3 *db);
 
 //int socket_check(int *sockfd,char *servip,int *port);
 
 //int ds18b20_get_temperature(float *temper);
 
-int  get_date_time(char *buf_t);
+//int  get_date_time(char *buf_t);
 
 //void log_init(const char *config_file);
 
@@ -146,7 +146,7 @@ int main(int argc, char **argv)
 	}
 /*
 	memset(&hints,0,sizeof(hints));
-	hints.ai_flags-=AI_PASSIVE;
+	hints.ai_flags=AI_PASSIVE;
 	hints.ai_socktype=SOCK_STREAM;
 	hints.ai_family=AF_INET;
 	hints.ai_protocol=0;
