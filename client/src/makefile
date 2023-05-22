@@ -39,8 +39,9 @@ uninstall:
 	rm -rf ${INSTPATH}/lib*.a
 	rm -rf ${INSTPATH}/*.h
 
+clear:
+	rm -rf *.o
 
-
-clean: 
+clean:clear 
 	rm -rf lib*.a
 	rm -rf *.db
