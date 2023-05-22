@@ -184,8 +184,23 @@ int main(int argc, char **argv)
         }
     }
         /*如果数据库中有数据就发送数据库的数据*/
-        //memset(buf,0,sizeof(buf));
-        //if()
+        memset(buf,0,sizeof(buf));
+        if((sql_select_data(db))>0)
+        {
+            memset(buf,0,sizeof(buf));
+            pack_data(&pack,buf,sizeof(buf));
+            if(socket_write(&sock,buf,strlen(buf))<0)
+            {
+                socket_close(&sock);  
+            }
+            else
+            {
+                if(sql_delete_data(sqlite3 *db)<0)
+                {
+                    return -9;
+                }
+            }
+        }
 
 	sqlite3_close(db);
 	socket_close(&sock);
