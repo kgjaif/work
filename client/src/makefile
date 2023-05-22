@@ -4,14 +4,8 @@ LIBNAME3=database
 LIBNAME4=syslog
 LIBNAME5=packet
 INSTPATH=`pwd`/../lib/
-APPNAME=socket_ds18b20
-CFLAGS+=-I ${LIBPATH}
-LDFLAGS+=-L ${LIBPATH}
-LDFLAGS+=-l${LIBNAME1}
-LDFLAGS+=-l${LIBNAME2}
-LDFLAGS+=-l${LIBNAME3}
-LDFLAGS+=-l${LIBNAME4}
-LDFLAGS+=-l${LIBNAME5}
+
+
 
 CC=gcc
 AR=ar
@@ -19,7 +13,6 @@ AR=ar
 all:static_lib 
 	@make clear
 	@make install
-	${CC} ${CFLAGS} socket_ds18b20.c -l sqlite3  -o ${APPNAME} ${LDFLAGS} 	 	       
 
 static_lib:
 	${CC} -c *.c

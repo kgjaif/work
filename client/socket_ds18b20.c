@@ -12,16 +12,16 @@
 #include <time.h>
 #include <signal.h>
 #include <libgen.h>
+
 #include "syslog.h"
-#include "database.h"
 #include "ds18b20.h"
 #include "packet.h"
 #include "socket.h"
-
+#include "database.h"
 
 int sample_stop=0;
 
-static inline void print_usage(char *program);
+static void print_usage(char *program);
                                                       
 void set_stop(int signum);
 
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
         {
             if(sample_stop)
             {
-                if((sql_insert_data(db,pack,sizeof(buf)))<0)
+                if((sql_insert_data(db,buf,pack,sizeof(buf)))<0)
                 {
                     log_write(LOG_LEVEL_ERROR,"Insert data into database failure\n");
                     return -7;
@@ -171,47 +171,28 @@ int main(int argc, char **argv)
             pack_data(&pack,buf,sizeof(buf));
             if((socket_write(&sock,buf,strlen(buf)))<0)
             {
+                printf("KKKKKK\n");
+                printf("KKKK:%s\n",buf);
                 if((sql_insert_data(db,buf,pack,sizeof(buf)))<0)
                 {
+                    printf("ooooooo:%s\n",buf);
                      log_write(LOG_LEVEL_ERROR,"Insert data into databasefailure\n");
                      return -8;
                 }
                 socket_close(&sock);
             }
         }
-
+    }
         /*如果数据库中有数据就发送数据库的数据*/
         //memset(buf,0,sizeof(buf));
         //if()
- 
 
-
-/*
-		sql_insert_data(db,buf,devsn,buf_t,temper,sizeof(buf));
-		if(rv<0)
-		{
-			log_write(LOG_LEVEL_ERROR,"write to server by sockfd[%d] failure:%s\n",sockfd,strerror(errno));
-			return -3;
-
-		}
-
-		if(cur_time - last_time>=10)
-		{
-
-			 //write(sockfd,buf,strlen(buf));
-             socket_write(&sock,buf,strlen(buf));
-		}
-		printf("curtime:%d\n",cur_time-last_time);
-		last_time=cur_time;
-		sql_select_data(db);
-	}
 	sqlite3_close(db);
-	close(sock->ockfd);
+	socket_close(&sock);
 	return 0;
 }
-*/
 
-static inline void print_usage(char *program)
+static void print_usage(char *program)
 {
 	printf("%s usage:\n",program);
 	printf("-i(--ipaddr):sepcify server IP address\n");
