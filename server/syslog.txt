@@ -36,3 +36,7 @@
 
 [INFO ] 2023-05-19 11:13:09 [PID:23656]Create table temperature successfully
 
+[INFO ] 2023-05-22 11:32:38 [PID:23727]Open sqlite3 successfully
+
+[INFO ] 2023-05-22 11:32:38 [PID:23727]Create table temperature successfully
+

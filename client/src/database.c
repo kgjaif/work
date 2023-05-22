@@ -1,12 +1,17 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sqlite3.h>
 #include "syslog.h"
+#include "packet.h"
 
 #define LOG_LEVEL_DEBUG 0
 #define LOG_LEVEL_INFO  1
 #define LOG_LEVEL_ERROR 2
 
- int callback(void *Notused,int argc,char **argv, char **azColName)
+static FILE *log_file = NULL;
+static int log_level = LOG_LEVEL_INFO;
+
+int callback(void *Notused,int argc,char **argv, char **azColName)
 {
     int         i;  
 
@@ -18,6 +23,7 @@
 
     return 0;
 }
+
 
 
 int sql_open_database(sqlite3 **db)
@@ -32,6 +38,7 @@ int sql_open_database(sqlite3 **db)
 
     log_write(LOG_LEVEL_INFO,"Open sqlite3 successfully\n");
 }
+
 
 
 int sql_create_table(sqlite3 *db)
@@ -51,28 +58,32 @@ int sql_create_table(sqlite3 *db)
     log_write(LOG_LEVEL_INFO,"Create table temperature successfully\n");
 }
 
-int sql_insert_data(sqlite3 *db,char *buf,char *devsn,char* buf_t,float temper,size_t buf_length)
+
+
+int sql_insert_data(sqlite3 *db,char *buf,packet_t pack,size_t buf_length)
 
 {
-    char *tr;
+    char *inst;
     char *errmsg;
-    tr=sqlite3_mprintf("INSERT INTO temperature VALUES(NULL,'%s','%s','%f');",devsn,buf_t,temper);
-    snprintf(buf,buf_length,"%s\n",tr);
-    if(!tr)
+    inst=sqlite3_mprintf("INSERT INTO temperature VALUES(NULL,'%s','%s','%f');",pack.devsn,pack.buf_t,pack.temper);
+    snprintf(buf,buf_length,"%s\n",inst);
+    if(!inst)
     {
         log_write(LOG_LEVEL_ERROR,"insert error%s\n",errmsg);
         return 0;
     }
 
-    if(SQLITE_OK!= sqlite3_exec(db,tr,0,0,&errmsg))
-    {
+    if(SQLITE_OK!= sqlite3_exec(db,inst,0,0,&errmsg))
+    {  
         log_write(LOG_LEVEL_ERROR,"error Insert data: %s\n",errmsg);
         sqlite3_free(errmsg);
-        sqlite3_free(tr);
+        sqlite3_free(inst);
         sqlite3_close(db);
         return -1;
     }
 }
+
+
 
 int sql_select_data(sqlite3 *db)
 {
@@ -89,6 +100,8 @@ int sql_select_data(sqlite3 *db)
         return -1;
     }
 }
+
+
 
 int sql_delete_data(sqlite3 *db)
 {

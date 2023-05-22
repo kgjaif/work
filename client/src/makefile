@@ -4,18 +4,22 @@ LIBNAME3=database
 LIBNAME4=syslog
 LIBNAME5=packet
 INSTPATH=`pwd`/../lib/
+APPNAME=socket_ds18b20
+CFLAGS+=-I ${LIBPATH}
+LDFLAGS+=-L ${LIBPATH}
+LDFLAGS+=-l${LIBNAME1}
+LDFLAGS+=-l${LIBNAME2}
+LDFLAGS+=-l${LIBNAME3}
+LDFLAGS+=-l${LIBNAME4}
+LDFLAGS+=-l${LIBNAME5}
 
 CC=gcc
 AR=ar
 
-all: dynamic_lib static_lib 
+all:static_lib 
 	@make clear
 	@make install
-
-dynamic_lib:
-	${CC} -shared -fPIC *.c -o lib${LIBNAME}.so
-
-
+	${CC} ${CFLAGS} socket_ds18b20.c -l sqlite3  -o ${APPNAME} ${LDFLAGS} 	 	       
 
 static_lib:
 	${CC} -c *.c
@@ -26,22 +30,17 @@ static_lib:
 	${AR} -rcs lib${LIBNAME5}.a ${LIBNAME5}.o
 
 install:
-	cp -rf lib*.so ${INSTPATH}  
 	cp -rf lib*.a ${INSTPATH}
 	cp -rf *.h ${INSTPATH}
 
 
 
 uninstall:
-	rm -rf ${INSTPATH}/lib*.so
 	rm -rf ${INSTPATH}/lib*.a
 	rm -rf ${INSTPATH}/*.h
 
 
-clear:
-	rm -rf *.o
 
-clean: clear
+clean: 
 	rm -rf lib*.a
-	rm -rf lib*.so
 	rm -rf *.db

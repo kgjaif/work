@@ -1,0 +1,12 @@
+[INFO] 2023-05-22 11:32:04 [PID:23631]Open sqlite3 successfully
+
+[INFO] 2023-05-22 11:32:04 [PID:23631]Create table temperature successfully
+
+[ERROR] 2023-05-22 11:32:04 [PID:23631]Socket check failure!
+
+[INFO] 2023-05-22 11:32:45 [PID:23741]Open sqlite3 successfully
+
+[INFO] 2023-05-22 11:32:45 [PID:23741]Create table temperature successfully
+
+[ERROR] 2023-05-22 11:32:45 [PID:23741]Socket check failure!
+
