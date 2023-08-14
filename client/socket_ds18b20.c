@@ -19,7 +19,8 @@
 #include "socket.h"
 #include "database.h"
 
-int sample_stop=0;
+
+int sample_flag=0;
 
 static void print_usage(char *program);
                                                       
@@ -37,10 +38,11 @@ void set_stop(int signum);
 static FILE *log_file = NULL;
 static int log_level = LOG_LEVEL_INFO;
 
+
 int main(int argc, char **argv)
 
 {
-	int                      ch;
+	int                     ch;
 	int                     rv=-1;
     int                     sockfd=-1;
 	struct sockaddr_in      servaddr;
@@ -54,7 +56,7 @@ int main(int argc, char **argv)
     sqlite3                *db;
     packet_t                pack;
     socket_t                sock;
-    time_t                  last_time;
+    time_t                  last_time=0;
     time_t                  cur_time;
 
 	struct option           opts[]={
@@ -72,7 +74,7 @@ int main(int argc, char **argv)
 	{
 		switch(ch)
 		{
-
+  
 			case 'i':
 			    servip=optarg;
 				break;
@@ -89,13 +91,13 @@ int main(int argc, char **argv)
 		}
 	}
            
-
-	if(!port|!(!servip^!domain))
+printf("kkkkkkk\n");
+	if(!port||(!servip&&!domain))
 	{
 		print_usage(argv[0]);
 		return 0;
 	}
-
+            
 	log_init("syslog.txt");
 
     if((socket_init(&sock,servip,port))<0)
@@ -103,42 +105,43 @@ int main(int argc, char **argv)
         log_write(LOG_LEVEL_ERROR,"Socket initialization failure!\n");
         return -1;
     }
-
-    if(sql_open_database(&db)<0)
+printf("ppppp\n");
+    if(open_database(&db)<0)
     {
         log_write(LOG_LEVEL_ERROR,"Create database failure!\n");
         return -2;
     }
-
-    if(sql_create_table(db)<0)
+/*
+    if(create_table(db)<0)
     {
         log_write(LOG_LEVEL_ERROR,"Create table failure!\n");
         return -3;
     }
 
-	last_time=time(NULL);
-
+*/
 	while(1)
 	{
-        sample_stop=0;
+        sample_flag=0;
         /*判断是否到达采样时间*/
         cur_time=time(NULL);  
-        if(cur_time-last_time>=5)
+        if(cur_time-last_time>=5)      
         {
             /*直接采样*/
+			/* 
             if( sample_temperature(&pack)<0)
             {
                  log_write(LOG_LEVEL_ERROR,"Failed sample data\n");
                      return -4;
             }
-            sample_stop=1;
+            sample_flag=1;
           last_time=cur_time;  
+		  */
+			printf("llll\n");
         }
-                
         if((socket_check(&sock))<0)
         {
             log_write(LOG_LEVEL_ERROR,"Socket check failure!\n");
-                return -5;
+                                 
         }
 
         if(!sock.connected)
@@ -153,9 +156,9 @@ int main(int argc, char **argv)
         /*如果还是断开连接就存入数据库*/
         if(!sock.connected)
         {
-            if(sample_stop)
+            if(sample_flag)
             {
-                if((sql_insert_data(db,buf,pack,sizeof(buf)))<0)
+                if((insert_data(db,pack))<0)
                 {
                     log_write(LOG_LEVEL_ERROR,"Insert data into database failure\n");
                     return -7;
@@ -165,7 +168,7 @@ int main(int argc, char **argv)
         }
 
         /*socket连接正常就进行采样*/
-        if(sample_stop)
+        if(sample_flag)
         {
             memset(buf,0,sizeof(buf));
             pack_data(&pack,buf,sizeof(buf));
@@ -173,19 +176,19 @@ int main(int argc, char **argv)
             {
                 printf("KKKKKK\n");
                 printf("KKKK:%s\n",buf);
-                if((sql_insert_data(db,buf,pack,sizeof(buf)))<0)
+                if((insert_data(db,pack))<0)
                 {
                     printf("ooooooo:%s\n",buf);
                      log_write(LOG_LEVEL_ERROR,"Insert data into databasefailure\n");
                      return -8;
                 }
+
                 socket_close(&sock);
             }
         }
-    }
         /*如果数据库中有数据就发送数据库的数据*/
         memset(buf,0,sizeof(buf));
-        if((sql_select_data(db))>0)
+        if((select_data(db))>0)
         {
             memset(buf,0,sizeof(buf));
             pack_data(&pack,buf,sizeof(buf));
@@ -195,12 +198,13 @@ int main(int argc, char **argv)
             }
             else
             {
-                if(sql_delete_data(sqlite3 *db)<0)
+                if(sql_delete_data(db)<0)
                 {
                     return -9;
                 }
             }
         }
+    }
 
 	sqlite3_close(db);
 	socket_close(&sock);
@@ -218,11 +222,11 @@ static void print_usage(char *program)
 }
 
 
-void set_stop(int signum)
+void set_flag(int signum)
 {
 	if(signum==SIGINT)
 	{
 		printf("exit\n");
 	}
-	sample_stop=1;
+	sample_flag=1;
 }

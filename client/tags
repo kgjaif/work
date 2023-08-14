@@ -1,0 +1,192 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+DEVSN_LEN	lib/packet.h	9;"	d
+DEVSN_LEN	src/packet.h	9;"	d
+LOG_FILE	socket_ds18b20.c	29;"	d	file:
+LOG_FILE	src/syslog.c	21;"	d	file:
+LOG_LEVEL_ALERT	socket_ds18b20.c	35;"	d	file:
+LOG_LEVEL_DEBUG	socket_ds18b20.c	32;"	d	file:
+LOG_LEVEL_DEBUG	src/database.c	7;"	d	file:
+LOG_LEVEL_DEBUG	src/syslog.c	24;"	d	file:
+LOG_LEVEL_ERROR	socket_ds18b20.c	34;"	d	file:
+LOG_LEVEL_ERROR	src/database.c	9;"	d	file:
+LOG_LEVEL_ERROR	src/socket.c	15;"	d	file:
+LOG_LEVEL_ERROR	src/syslog.c	26;"	d	file:
+LOG_LEVEL_INFO	socket_ds18b20.c	33;"	d	file:
+LOG_LEVEL_INFO	src/database.c	8;"	d	file:
+LOG_LEVEL_INFO	src/packet.c	9;"	d	file:
+LOG_LEVEL_INFO	src/socket.c	14;"	d	file:
+LOG_LEVEL_INFO	src/syslog.c	25;"	d	file:
+MAX_LOG_FILE_NUM	socket_ds18b20.c	31;"	d	file:
+MAX_LOG_FILE_NUM	src/syslog.c	23;"	d	file:
+MAX_LOG_FILE_SIZE	socket_ds18b20.c	30;"	d	file:
+MAX_LOG_FILE_SIZE	src/syslog.c	22;"	d	file:
+_DATABASE_	lib/database.h	2;"	d
+_DATABASE_	src/database.h	2;"	d
+_DS18B20_H_	lib/ds18b20.h	2;"	d
+_DS18B20_H_	src/ds18b20.h	2;"	d
+_PACKET_H_	lib/packet.h	2;"	d
+_PACKET_H_	src/packet.h	2;"	d
+_SOCKET_H_	lib/socket.h	2;"	d
+_SOCKET_H_	src/socket.h	2;"	d
+_SYSLOG_H_	lib/syslog.h	15;"	d
+_SYSLOG_H_	src/syslog.h	15;"	d
+ap	src/syslog.c	/^	va_list ap;$/;"	l
+buf	socket_ds18b20.c	/^	char                    buf[512];$/;"	l
+buf	src/ds18b20.c	/^    char                  buf[128];$/;"	l
+buf	src/syslog.c	/^	char buf[1024];$/;"	l
+buf_t	lib/packet.h	/^    char  buf_t[32];$/;"	m	struct:packet_s	access:public
+buf_t	socket_ds18b20.c	/^	char                    buf_t[64];$/;"	l
+buf_t	src/packet.h	/^    char  buf_t[32];$/;"	m	struct:packet_s	access:public
+callback	src/database.c	/^int callback(void *Notused,int argc,char **argv, char **azColName)$/;"	f	signature:(void *Notused,int argc,char **argv, char **azColName)
+ch	socket_ds18b20.c	/^	int                     ch;$/;"	l
+connected	lib/socket.h	/^    int    connected;$/;"	m	struct:socket_s	access:public
+connected	src/socket.h	/^    int    connected;$/;"	m	struct:socket_s	access:public
+cur_time	socket_ds18b20.c	/^    time_t                  cur_time;$/;"	l
+db	socket_ds18b20.c	/^    sqlite3                *db;$/;"	l
+devsn	lib/packet.h	/^    char  devsn[DEVSN_LEN+1];$/;"	m	struct:packet_s	access:public
+devsn	socket_ds18b20.c	/^    char                   *devsn=NULL;$/;"	l
+devsn	src/packet.h	/^    char  devsn[DEVSN_LEN+1];$/;"	m	struct:packet_s	access:public
+direntp	src/ds18b20.c	/^    struct  dirent       *direntp=NULL;$/;"	l
+dirp	src/ds18b20.c	/^    DIR                             *dirp=NULL;$/;"	l
+domain	socket_ds18b20.c	/^	char                   *domain=NULL;$/;"	l
+ds18b20_get_temperature	lib/ds18b20.h	/^extern int ds18b20_get_temperature(float *temper);$/;"	p	signature:(float *temper)
+ds18b20_get_temperature	src/ds18b20.c	/^int ds18b20_get_temperature(float *temper)$/;"	f	signature:(float *temper)
+ds18b20_get_temperature	src/ds18b20.h	/^extern int ds18b20_get_temperature(float *temper);$/;"	p	signature:(float *temper)
+ds18b20_path	src/ds18b20.c	/^    char                  ds18b20_path[64];$/;"	l
+errmsg	src/database.c	/^    char   *errmsg;$/;"	l
+errmsg	src/database.c	/^    char *errmsg;$/;"	l
+fd	src/ds18b20.c	/^    int                   fd=-1;$/;"	l
+found	src/ds18b20.c	/^    int                   found=0;$/;"	l
+get_data_time	lib/packet.h	/^extern int get_data_time(char *buf_t,int size);$/;"	p	signature:(char *buf_t,int size)
+get_data_time	src/packet.c	/^int get_data_time(char *buf_t,int size)$/;"	f	signature:(char *buf_t,int size)
+get_data_time	src/packet.h	/^extern int get_data_time(char *buf_t,int size);$/;"	p	signature:(char *buf_t,int size)
+get_devsn	lib/packet.h	/^extern int get_devsn(char *devsn,int size);$/;"	p	signature:(char *devsn,int size)
+get_devsn	src/packet.c	/^int get_devsn(char *devsn,int size)$/;"	f	signature:(char *devsn,int size)
+get_devsn	src/packet.h	/^extern int get_devsn(char *devsn,int size);$/;"	p	signature:(char *devsn,int size)
+hints	src/socket.c	/^    struct addrinfo         hints;$/;"	l
+i	src/database.c	/^    int         i;  $/;"	l
+info	src/socket.c	/^    struct  tcp_info    info;$/;"	l
+inst	src/database.c	/^    char *inst;$/;"	l
+ipstr	src/socket.c	/^    char                    ipstr[INET_ADDRSTRLEN];$/;"	l
+last_time	socket_ds18b20.c	/^    time_t                  last_time=0;$/;"	l
+len	src/socket.c	/^    int                 len=sizeof(info);$/;"	l
+log_file	socket_ds18b20.c	/^static FILE *log_file = NULL;$/;"	v	file:
+log_file	src/database.c	/^static FILE *log_file = NULL;$/;"	v	file:
+log_file	src/syslog.c	/^static FILE *log_file = NULL;$/;"	v	file:
+log_init	lib/syslog.h	/^extern void log_init(const char *config_file);$/;"	p	signature:(const char *config_file)
+log_init	src/syslog.c	/^void log_init(const char *config_file)$/;"	f	signature:(const char *config_file)
+log_init	src/syslog.h	/^extern void log_init(const char *config_file);$/;"	p	signature:(const char *config_file)
+log_level	socket_ds18b20.c	/^static int log_level = LOG_LEVEL_INFO;$/;"	v	file:
+log_level	src/database.c	/^static int log_level = LOG_LEVEL_INFO;$/;"	v	file:
+log_level	src/syslog.c	/^static int log_level = LOG_LEVEL_INFO;$/;"	v	file:
+log_write	lib/socket.h	/^extern void log_write(int level,const char *fmt,...);$/;"	p	signature:(int level,const char *fmt,...)
+log_write	lib/syslog.h	/^extern void log_write(int level, const char *fmt, ...);$/;"	p	signature:(int level, const char *fmt, ...)
+log_write	src/packet.c	/^extern void log_write(int level, const char *fmt, ...);$/;"	p	file:	signature:(int level, const char *fmt, ...)
+log_write	src/socket.h	/^extern void log_write(int level,const char *fmt,...);$/;"	p	signature:(int level,const char *fmt,...)
+log_write	src/syslog.c	/^void log_write(int level, const char *fmt, ...)$/;"	f	signature:(int level, const char *fmt, ...)
+log_write	src/syslog.h	/^extern void log_write(int level, const char *fmt, ...);$/;"	p	signature:(int level, const char *fmt, ...)
+main	socket_ds18b20.c	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
+new_file_name	src/syslog.c	/^				char old_file_name[256], new_file_name[256];$/;"	l
+old_file_name	src/syslog.c	/^				char old_file_name[256], new_file_name[256];$/;"	l
+opts	socket_ds18b20.c	/^	struct option           opts[]={$/;"	l
+p	src/socket.c	/^    struct addrinfo        *p;$/;"	l
+pack	socket_ds18b20.c	/^    packet_t                pack;$/;"	l
+pack_data	lib/packet.h	/^extern int pack_data(packet_t *pack,char *buf,int size);$/;"	p	signature:(packet_t *pack,char *buf,int size)
+pack_data	src/packet.c	/^int pack_data(packet_t *pack,char *buf,int size)$/;"	f	signature:(packet_t *pack,char *buf,int size)
+pack_data	src/packet.h	/^extern int pack_data(packet_t *pack,char *buf,int size);$/;"	p	signature:(packet_t *pack,char *buf,int size)
+packet_s	lib/packet.h	/^typedef struct packet_s$/;"	s
+packet_s	src/packet.h	/^typedef struct packet_s$/;"	s
+packet_s::buf_t	lib/packet.h	/^    char  buf_t[32];$/;"	m	struct:packet_s	access:public
+packet_s::buf_t	src/packet.h	/^    char  buf_t[32];$/;"	m	struct:packet_s	access:public
+packet_s::devsn	lib/packet.h	/^    char  devsn[DEVSN_LEN+1];$/;"	m	struct:packet_s	access:public
+packet_s::devsn	src/packet.h	/^    char  devsn[DEVSN_LEN+1];$/;"	m	struct:packet_s	access:public
+packet_s::temper	lib/packet.h	/^    float temper;$/;"	m	struct:packet_s	access:public
+packet_s::temper	src/packet.h	/^    float temper;$/;"	m	struct:packet_s	access:public
+packet_t	lib/packet.h	/^}packet_t;$/;"	t	typeref:struct:packet_s
+packet_t	src/packet.h	/^}packet_t;$/;"	t	typeref:struct:packet_s
+path_sn	src/ds18b20.c	/^    char                  path_sn[32];$/;"	l
+port	lib/socket.h	/^    int    port;$/;"	m	struct:socket_s	access:public
+port	socket_ds18b20.c	/^	int                     port;$/;"	l
+port	src/socket.h	/^    int    port;$/;"	m	struct:socket_s	access:public
+print_usage	socket_ds18b20.c	/^static void print_usage(char *program)$/;"	f	file:	signature:(char *program)
+print_usage	socket_ds18b20.c	/^static void print_usage(char *program);$/;"	p	file:	signature:(char *program)
+program	socket_ds18b20.c	/^	char                   *program=NULL;$/;"	l
+ptr	src/ds18b20.c	/^    char            *ptr=NULL;$/;"	l
+res	src/socket.c	/^    struct addrinfo        *res;$/;"	l
+result	src/packet.c	/^    struct tm result;$/;"	l
+result	src/syslog.c	/^	struct  tm result;$/;"	l
+rt	src/database.c	/^    char *rt="delete from temperature where id in(SELECT id FROM 'temperature' where id>=1);"; $/;"	l
+rv	socket_ds18b20.c	/^	int                     rv=-1;$/;"	l
+rv	src/socket.c	/^    int                     rv=-1;$/;"	l
+rv	src/socket.c	/^    int rv=-1;$/;"	l
+sample_flag	socket_ds18b20.c	/^int sample_flag=0;$/;"	v
+sample_temperature	lib/packet.h	/^static inline int sample_temperature(packet_t *pack)$/;"	f	signature:(packet_t *pack)
+sample_temperature	src/packet.h	/^static inline int sample_temperature(packet_t *pack)$/;"	f	signature:(packet_t *pack)
+servaddr	socket_ds18b20.c	/^	struct sockaddr_in      servaddr;$/;"	l
+servaddr	src/socket.c	/^    struct sockaddr_in      servaddr;$/;"	l
+servip	lib/socket.h	/^    char  *servip;$/;"	m	struct:socket_s	access:public
+servip	socket_ds18b20.c	/^	char                   *servip=NULL;$/;"	l
+servip	src/socket.h	/^    char  *servip;$/;"	m	struct:socket_s	access:public
+set_flag	socket_ds18b20.c	/^void set_flag(int signum)$/;"	f	signature:(int signum)
+set_stop	socket_ds18b20.c	/^void set_stop(int signum);$/;"	p	file:	signature:(int signum)
+slc	src/database.c	/^    char *slc;$/;"	l
+sn	src/packet.c	/^    char sn[]="0001";$/;"	l
+sock	socket_ds18b20.c	/^    socket_t                sock;$/;"	l
+socket_check	lib/socket.h	/^extern int socket_check(socket_t *sock);$/;"	p	signature:(socket_t *sock)
+socket_check	src/socket.c	/^int socket_check(socket_t *sock)$/;"	f	signature:(socket_t *sock)
+socket_check	src/socket.h	/^extern int socket_check(socket_t *sock);$/;"	p	signature:(socket_t *sock)
+socket_close	lib/socket.h	/^extern int socket_close(socket_t *sock);$/;"	p	signature:(socket_t *sock)
+socket_close	src/socket.c	/^int socket_close(socket_t   *sock)$/;"	f	signature:(socket_t *sock)
+socket_close	src/socket.h	/^extern int socket_close(socket_t *sock);$/;"	p	signature:(socket_t *sock)
+socket_connect	lib/socket.h	/^extern int socket_connect(socket_t *sock);$/;"	p	signature:(socket_t *sock)
+socket_connect	src/socket.c	/^int socket_connect(socket_t *sock)$/;"	f	signature:(socket_t *sock)
+socket_connect	src/socket.h	/^extern int socket_connect(socket_t *sock);$/;"	p	signature:(socket_t *sock)
+socket_init	lib/socket.h	/^extern int socket_init(socket_t *sock, char *servip,int port);$/;"	p	signature:(socket_t *sock, char *servip,int port)
+socket_init	src/socket.c	/^int socket_init(socket_t *sock,char *servip,int port)$/;"	f	signature:(socket_t *sock,char *servip,int port)
+socket_init	src/socket.h	/^extern int socket_init(socket_t *sock, char *servip,int port);$/;"	p	signature:(socket_t *sock, char *servip,int port)
+socket_s	lib/socket.h	/^typedef struct socket_s$/;"	s
+socket_s	src/socket.h	/^typedef struct socket_s$/;"	s
+socket_s::connected	lib/socket.h	/^    int    connected;$/;"	m	struct:socket_s	access:public
+socket_s::connected	src/socket.h	/^    int    connected;$/;"	m	struct:socket_s	access:public
+socket_s::port	lib/socket.h	/^    int    port;$/;"	m	struct:socket_s	access:public
+socket_s::port	src/socket.h	/^    int    port;$/;"	m	struct:socket_s	access:public
+socket_s::servip	lib/socket.h	/^    char  *servip;$/;"	m	struct:socket_s	access:public
+socket_s::servip	src/socket.h	/^    char  *servip;$/;"	m	struct:socket_s	access:public
+socket_s::sockfd	lib/socket.h	/^    int    sockfd;$/;"	m	struct:socket_s	access:public
+socket_s::sockfd	src/socket.h	/^    int    sockfd;$/;"	m	struct:socket_s	access:public
+socket_t	lib/socket.h	/^}socket_t;$/;"	t	typeref:struct:socket_s
+socket_t	src/socket.h	/^}socket_t;$/;"	t	typeref:struct:socket_s
+socket_write	lib/socket.h	/^extern int socket_write(socket_t *sock,char *data,size_t data_size);$/;"	p	signature:(socket_t *sock,char *data,size_t data_size)
+socket_write	src/socket.c	/^int   socket_write(socket_t *sock,char *data,size_t data_size)$/;"	f	signature:(socket_t *sock,char *data,size_t data_size)
+socket_write	src/socket.h	/^extern int socket_write(socket_t *sock,char *data,size_t data_size);$/;"	p	signature:(socket_t *sock,char *data,size_t data_size)
+sockfd	lib/socket.h	/^    int    sockfd;$/;"	m	struct:socket_s	access:public
+sockfd	socket_ds18b20.c	/^    int                     sockfd=-1;$/;"	l
+sockfd	src/socket.h	/^    int    sockfd;$/;"	m	struct:socket_s	access:public
+sql	src/database.c	/^    char   *sql;$/;"	l
+sql_create_table	lib/database.h	/^extern int sql_create_table(sqlite3 *db);$/;"	p	signature:(sqlite3 *db)
+sql_create_table	src/database.c	/^int sql_create_table(sqlite3 *db)$/;"	f	signature:(sqlite3 *db)
+sql_create_table	src/database.h	/^extern int sql_create_table(sqlite3 *db);$/;"	p	signature:(sqlite3 *db)
+sql_delete_data	lib/database.h	/^extern int sql_delete_data(sqlite3 *db);$/;"	p	signature:(sqlite3 *db)
+sql_delete_data	src/database.c	/^int sql_delete_data(sqlite3 *db)$/;"	f	signature:(sqlite3 *db)
+sql_delete_data	src/database.h	/^extern int sql_delete_data(sqlite3 *db);$/;"	p	signature:(sqlite3 *db)
+sql_insert_data	lib/database.h	/^extern int sql_insert_data(sqlite3 *db,char *buf,packet_t pack,size_t rt_length);$/;"	p	signature:(sqlite3 *db,char *buf,packet_t pack,size_t rt_length)
+sql_insert_data	src/database.c	/^int sql_insert_data(sqlite3 *db,char *buf,packet_t pack,size_t buf_length)$/;"	f	signature:(sqlite3 *db,char *buf,packet_t pack,size_t buf_length)
+sql_insert_data	src/database.h	/^extern int sql_insert_data(sqlite3 *db,char *buf,packet_t pack,size_t rt_length);$/;"	p	signature:(sqlite3 *db,char *buf,packet_t pack,size_t rt_length)
+sql_open_database	lib/database.h	/^extern int sql_open_database(sqlite3 **db);$/;"	p	signature:(sqlite3 **db)
+sql_open_database	src/database.c	/^int sql_open_database(sqlite3 **db)$/;"	f	signature:(sqlite3 **db)
+sql_open_database	src/database.h	/^extern int sql_open_database(sqlite3 **db);$/;"	p	signature:(sqlite3 **db)
+sql_select_data	lib/database.h	/^extern int sql_select_data(sqlite3 *db);$/;"	p	signature:(sqlite3 *db)
+sql_select_data	src/database.c	/^int sql_select_data(sqlite3 *db)$/;"	f	signature:(sqlite3 *db)
+sql_select_data	src/database.h	/^extern int sql_select_data(sqlite3 *db);$/;"	p	signature:(sqlite3 *db)
+t	src/packet.c	/^    time_t t;  $/;"	l
+t	src/syslog.c	/^	time_t t;$/;"	l
+temper	lib/packet.h	/^    float temper;$/;"	m	struct:packet_s	access:public
+temper	src/packet.h	/^    float temper;$/;"	m	struct:packet_s	access:public
+tm	src/packet.c	/^    struct tm *tm;$/;"	l
+tm	src/syslog.c	/^	struct tm *tm;$/;"	l
+w1_path	src/ds18b20.c	/^    char            w1_path[128]="\/sys\/bus\/w1\/devices\/";$/;"	l

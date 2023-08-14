@@ -35,7 +35,8 @@ int get_data_time(char *buf_t,int size)
 int pack_data(packet_t *pack,char *buf,int size)
 {
     memset(buf,0,size);
-    snprintf(buf,size,"%s,%f",pack->devsn,pack->buf_t,pack->temper);
+    snprintf(buf,size,"%s,%f",pack->devsn,pack->datatm_buf,
+			pack->temper);
     log_write(LOG_LEVEL_INFO,"This is sample data:%s\n",buf);
 }
 

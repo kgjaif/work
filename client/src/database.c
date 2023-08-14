@@ -25,10 +25,10 @@ int callback(void *Notused,int argc,char **argv, char **azColName)
 }
 
 
-
-int sql_open_database(sqlite3 **db)
+int open_database(sqlite3 **db)
 {
-    char *errmsg;
+    char   *errmsg;
+    char   *sql;
     if( sqlite3_open("temperature.db",db)!=SQLITE_OK)
     {   
         log_write(LOG_LEVEL_ERROR,"cannot open database:%s\n",sqlite3_errmsg((sqlite3 *)db));
@@ -37,36 +37,38 @@ int sql_open_database(sqlite3 **db)
     }   
 
     log_write(LOG_LEVEL_INFO,"Open sqlite3 successfully\n");
+
+	if((sql = "create table if not exists temperature(id INTEGER PRIMARY KEY,devsn VARCHAR(10),time VARCHAR(12),temper VARCHAR(20));")<0)
+	{
+
+		if(SQLITE_OK!=sqlite3_exec((sqlite3*)db,sql,0,0,&errmsg))
+		{   
+			log_write(LOG_LEVEL_ERROR,"error creating table: %s\n",errmsg);
+			sqlite3_free(errmsg);
+			sqlite3_close((sqlite3 *)db);
+			return -1; 
+		}   
+		log_write(LOG_LEVEL_INFO,"Create table temperature successfully\n");
+	}
 }
 
-
-
+/* 
 int sql_create_table(sqlite3 *db)
 {
     char   *errmsg;
     char   *sql;
 
-    sql = "create table if not exists temperature(id INTEGER PRIMARY KEY,port  VARCHAR(10),time VARCHAR(12),temper VARCHAR(20));"; 
-
-    if(SQLITE_OK!=sqlite3_exec(db,sql,0,0,&errmsg))
-    {   
-        log_write(LOG_LEVEL_ERROR,"error creating table: %s\n",errmsg);
-        sqlite3_free(errmsg);
-        sqlite3_close(db);
-        return -1; 
-    }   
-    log_write(LOG_LEVEL_INFO,"Create table temperature successfully\n");
 }
+*/
 
 
-
-int sql_insert_data(sqlite3 *db,char *buf,packet_t pack,size_t buf_length)
+int insert_data(sqlite3 *db,packet_t pack)
 
 {
     char *inst;
     char *errmsg;
-    inst=sqlite3_mprintf("INSERT INTO temperature VALUES(NULL,'%s','%s','%f');",pack.devsn,pack.buf_t,pack.temper);
-    snprintf(buf,buf_length,"%s\n",inst);
+    inst=sqlite3_mprintf("INSERT INTO temperature VALUES(NULL,'%s','%s','%f');",pack.devsn,pack.datatm_buf,pack.temper);
+    //  snprintf(buf,sizeof(buf),"%s\n",inst);   
     if(!inst)
     {
         log_write(LOG_LEVEL_ERROR,"insert error%s\n",errmsg);
@@ -83,9 +85,7 @@ int sql_insert_data(sqlite3 *db,char *buf,packet_t pack,size_t buf_length)
     }
 }
 
-
-
-int sql_select_data(sqlite3 *db)
+int select_data(sqlite3 *db)
 {
     char *slc;
     char *errmsg;

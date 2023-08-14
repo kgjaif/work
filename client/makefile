@@ -17,7 +17,7 @@ CC=gcc
 AR=ar
 
 all:  
-	${CC} ${CFLAGS} client.c -o ${APPNAME} ${LDFLAGS} -l sqlite3
+	${CC} ${CFLAGS} socket_ds18b20.c -o ${APPNAME} ${LDFLAGS} -l sqlite3
 	export LD_LIBRARY_PATH=/home/lanli/work1/work/client/      	  
 
 clean:
